@@ -18,6 +18,7 @@ var (
 		"/boot/Image-*", // this is the aarch64 for SUSE, vmlinux which is also present won't boot
 		"/boot/vmlinuz-linux*",
 		"/boot/vmlinuz-*",
+		"/boot/vmlinux-*", // common on RISC-V and other arches when an uncompressed vmlinux is installed
 		"/lib/modules/*/vmlinuz",
 		"/lib/modules/*/vmlinuz.gz",
 	}

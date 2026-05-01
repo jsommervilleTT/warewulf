@@ -204,7 +204,7 @@ func ProvisionSend(w http.ResponseWriter, req *http.Request) {
 				w.WriteHeader(http.StatusNotFound)
 				return
 			}
-		case "grub.efi", "grub-tpm.efi", "grubx64.efi", "grubia32.efi", "grubaa64.efi", "grubarm.efi":
+		case "grub.efi", "grub-tpm.efi", "grubx64.efi", "grubia32.efi", "grubaa64.efi", "grubriscv64.efi", "grubarm.efi":
 			stage_file = image.GrubFind(imageName)
 			if stage_file == "" {
 				wwlog.Error("could't find grub*.efi for %s", imageName)

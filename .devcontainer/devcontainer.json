@@ -2,12 +2,13 @@
   "name": "Warewulf Development",
   "image": "registry.docker.com/rockylinux/rockylinux:10",
   "remoteUser": "vscode",
-  "onCreateCommand": "sudo dnf install -y dnf-utils && sudo dnf config-manager --set-enabled crb && sudo dnf install -y unzip cpio gpgme-devel python3-sphinx python3-sphinx_rtd_theme",
+  "onCreateCommand": "sudo dnf install -y dnf-utils && sudo dnf config-manager --set-enabled crb && sudo dnf install -y unzip cpio gpgme-devel python3-sphinx python3-sphinx_rtd_theme rpm-build golang python3-devel firewalld-filesystem gcc",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {},
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/go:1": {
-      "version": "latest"
+      "version": "latest",
+      "golangciLintVersion": "2.11.3"
     }
   },
   "customizations": {

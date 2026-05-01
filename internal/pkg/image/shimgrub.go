@@ -20,6 +20,8 @@ func shimNames() []string {
 		`shim.efi`,
 		`shim-sles.efi`,
 		`shimx64.efi`,
+		`shimaa64.efi`,
+		`shimriscv64.efi`,
 		`shim-susesigned.efi`,
 	}
 }
@@ -39,6 +41,7 @@ func grubNames() []string {
 		`grubx64.efi`,
 		`grubia32.efi`,
 		`grubaa64.efi`,
+		`grubriscv64.efi`,
 		`grubarm.efi`,
 	}
 }

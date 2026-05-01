@@ -6,6 +6,8 @@ dhcp-match=set:x86PC,option:client-arch, 7 #EFI x86-64
 dhcp-match=set:x86PC,option:client-arch, 6 #EFI x86-64
 dhcp-match=set:x86PC,option:client-arch, 9 #EFI x86-64
 dhcp-match=set:aarch64,option:client-arch, 11 #EFI aarch64
+dhcp-match=set:riscv64,option:client-arch, 27 #EFI RISC-V 64 (IANA 0x001b)
+dhcp-match=set:riscv64,option:client-arch, 28 #EFI RISC-V 64 HTTP boot (0x001c)
 dhcp-match=set:iPXE,77,"iPXE"
 dhcp-userclass=set:iPXE,iPXE
 dhcp-vendorclass=set:efi-http,HTTPClient:Arch:00016
@@ -20,6 +22,13 @@ dhcp-boot=tag:x86PC,"/warewulf/{{ index $.Tftp.IpxeBinaries "00:07" }}"
 {{- end }}
 {{- with (index $.Tftp.IpxeBinaries "00:0B" ) }}
 dhcp-boot=tag:aarch64,"/warewulf/{{ index $.Tftp.IpxeBinaries "00:0B" | basename }}"
+{{- end }}
+{{- with (index $.Tftp.IpxeBinaries "00:1B" ) }}
+dhcp-boot=tag:riscv64,"/warewulf/{{ index $.Tftp.IpxeBinaries "00:1B" | basename }}"
+{{- else }}
+{{- with (index $.Tftp.IpxeBinaries "00:1C" ) }}
+dhcp-boot=tag:riscv64,"/warewulf/{{ index $.Tftp.IpxeBinaries "00:1C" | basename }}"
+{{- end }}
 {{- end }}
 {{- end }}
 # iPXE binary will get the following configuration file
@@ -39,8 +48,12 @@ enable-ra
 # IPv6 matching (client-arch=61)
 dhcp-match=set:x86PC,option6:61,0007   # EFI x86-64
 dhcp-match=set:aarch64,option6:61,0011 # EFI aarch64
+dhcp-match=set:riscv64,option6:61,001b # EFI RISC-V 64
+dhcp-match=set:riscv64,option6:61,001c # EFI RISC-V 64 HTTP boot
 dhcp-vendorclass=set:x86PC,enterprise:343,PXEClient:Arch:00007   # EFI x86-64
 dhcp-vendorclass=set:aarch64,enterprise:343,PXEClient:Arch:00011 # EFI aarch64
+dhcp-vendorclass=set:riscv64,enterprise:343,PXEClient:Arch:0001b # EFI RISC-V 64
+dhcp-vendorclass=set:riscv64,enterprise:343,PXEClient:Arch:0001c # EFI RISC-V 64 HTTP boot
 
 # IPv6 bootfile-url (iPXE EFI binary)
 {{ with (index $.Tftp.IpxeBinaries "00:07" ) -}}
@@ -48,6 +61,13 @@ dhcp-option=tag:x86PC,option6:bootfile-url,"tftp://[{{$.Ipaddr6}}]/warewulf/{{ i
 {{ end -}}
 {{ with (index $.Tftp.IpxeBinaries "00:0B" ) -}}
 dhcp-option=tag:aarch64,option6:bootfile-url,"tftp://[{{$.Ipaddr6}}]/warewulf/{{ index $.Tftp.IpxeBinaries "00:0B" | basename }}"
+{{ end -}}
+{{ with (index $.Tftp.IpxeBinaries "00:1B" ) -}}
+dhcp-option=tag:riscv64,option6:bootfile-url,"tftp://[{{$.Ipaddr6}}]/warewulf/{{ index $.Tftp.IpxeBinaries "00:1B" | basename }}"
+{{ else -}}
+{{ with (index $.Tftp.IpxeBinaries "00:1C" ) -}}
+dhcp-option=tag:riscv64,option6:bootfile-url,"tftp://[{{$.Ipaddr6}}]/warewulf/{{ index $.Tftp.IpxeBinaries "00:1C" | basename }}"
+{{ end -}}
 {{ end -}}
 
 # IPv6 iPXE binary will get the following configuration file

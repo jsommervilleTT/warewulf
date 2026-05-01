@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## Unreleased
+
+### Added
+
+- RISC-V 64 UEFI network boot defaults: ``tftp.ipxe`` map keys ``00:1B`` and ``00:1C``, dnsmasq host-overlay matches, and ``scripts/build-ipxe.sh`` support for ``bin-riscv64-efi/snponly.efi`` when ``riscv64-linux-gnu-gcc`` is installed.
+- GRUB/shim discovery for ``grubriscv64.efi`` and ``shimriscv64.efi``; HTTP ``efiboot`` path serves ``grubriscv64.efi``; ``wwctl configure tftp`` copies host GRUB to ``grubriscv64.efi`` when the resolved path indicates riscv64.
+
 ## v4.6.5, 2026-01-12
 
 ### Added

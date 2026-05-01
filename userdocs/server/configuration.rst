@@ -42,6 +42,8 @@ Re-run both of these commands when making changes to ``warewulf.conf``.
        "00:00": undionly.kpxe
        "00:07": ipxe-snponly-x86_64.efi
        "00:09": ipxe-snponly-x86_64.efi
+       "00:1B": bin-riscv64-efi-snponly.efi
+       "00:1C": bin-riscv64-efi-snponly.efi
    nfs:
      enabled: true
      systemd name: nfsd
@@ -180,6 +182,8 @@ directory and enables the TFTP service.
        "00:00": undionly.kpxe
        "00:07": ipxe-snponly-x86_64.efi
        "00:09": ipxe-snponly-x86_64.efi
+       "00:1B": bin-riscv64-efi-snponly.efi
+       "00:1C": bin-riscv64-efi-snponly.efi
 
 * ``tftp:enabled``: Whether Warewulf should configure a TFTP server on the
   cluster network. Set to ``false`` when managing TFTP separately.
@@ -196,7 +200,10 @@ directory and enables the TFTP service.
   ``paths:ipxesource``. By default, these paths correspond to the location of
   the correct iPXE binary for each architecture in the distribution iPXE
   packages; but they can be specified explicitly when providing a local iPXE
-  build.
+  build. Keys ``00:1B`` and ``00:1C`` identify RISC-V 64 UEFI and RISC-V 64
+  UEFI HTTP boot clients per the IANA processor architecture registry; they
+  default to a locally built ``bin-riscv64-efi-snponly.efi`` (see
+  :ref:`Building iPXE locally`).
 
 nfs
 ===

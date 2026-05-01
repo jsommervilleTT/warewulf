@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 
 	warewulfconf "github.com/warewulf/warewulf/internal/pkg/config"
 	"github.com/warewulf/warewulf/internal/pkg/wwlog"
@@ -40,6 +41,19 @@ func CopyShimGrub() (err error) {
 	_ = os.Chmod(path.Join(conf.TFTP.TftpRoot, "warewulf", "grub.efi"), 0o755)
 	err = util.CopyFile(grubPath, path.Join(conf.TFTP.TftpRoot, "warewulf", "grubx64.efi"))
 	_ = os.Chmod(path.Join(conf.TFTP.TftpRoot, "warewulf", "grubx64.efi"), 0o755)
+
+	// UEFI shim may chain-load a distro-specific grub name; mirror the host grub
+	// we found onto those names when the path indicates the architecture.
+	lower := strings.ToLower(grubPath)
+	tftpWW := path.Join(conf.TFTP.TftpRoot, "warewulf")
+	if strings.Contains(lower, "aarch64") || strings.Contains(lower, "aa64") {
+		_ = util.CopyFile(grubPath, path.Join(tftpWW, "grubaa64.efi"))
+		_ = os.Chmod(path.Join(tftpWW, "grubaa64.efi"), 0o755)
+	}
+	if strings.Contains(lower, "riscv") {
+		_ = util.CopyFile(grubPath, path.Join(tftpWW, "grubriscv64.efi"))
+		_ = os.Chmod(path.Join(tftpWW, "grubriscv64.efi"), 0o755)
+	}
 
 	return
 }

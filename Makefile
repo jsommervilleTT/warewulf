@@ -21,7 +21,7 @@ include Tools.mk
 version: ## Build version
 	@echo $(VERSION)
 
-WWCLIENTS = wwclient wwclient.x86_64 wwclient.aarch64
+WWCLIENTS = wwclient wwclient.x86_64 wwclient.aarch64 wwclient.riscv64
 
 .PHONY: build
 build: wwctl $(WWCLIENTS) etc/bash_completion.d/wwctl ## Build the Warewulf binaries
@@ -72,6 +72,9 @@ wwclient.x86_64: $(config) $(call godeps,cmd/wwclient/main.go)
 
 wwclient.aarch64: $(config) $(call godeps,cmd/wwclient/main.go)
 	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -mod vendor -a -ldflags "-extldflags -static -s -w" -o wwclient.aarch64 cmd/wwclient/main.go
+
+wwclient.riscv64: $(config) $(call godeps,cmd/wwclient/main.go)
+	CGO_ENABLED=0 GOOS=linux GOARCH=riscv64 go build -mod vendor -a -ldflags "-extldflags -static -s -w" -o wwclient.riscv64 cmd/wwclient/main.go
 
 .PHONY: man_pages
 man_pages: wwctl $(wildcard docs/man/man5/*.5)
@@ -239,9 +242,11 @@ install: build docs ## Install Warewulf from source
 	install -d -m 0755 $(DESTDIR)$(DATADIR)/warewulf/overlays/wwclient/rootfs/$(WWCLIENTDIR)
 	cp -a $(DESTDIR)$(DATADIR)/warewulf/overlays/wwclient $(DESTDIR)$(DATADIR)/warewulf/overlays/wwclient.aarch64
 	cp -a $(DESTDIR)$(DATADIR)/warewulf/overlays/wwclient $(DESTDIR)$(DATADIR)/warewulf/overlays/wwclient.x86_64
+	cp -a $(DESTDIR)$(DATADIR)/warewulf/overlays/wwclient $(DESTDIR)$(DATADIR)/warewulf/overlays/wwclient.riscv64
 	install -m 0755 wwclient $(DESTDIR)$(DATADIR)/warewulf/overlays/wwclient/rootfs/$(WWCLIENTDIR)/wwclient
 	install -m 0755 wwclient.x86_64 $(DESTDIR)$(DATADIR)/warewulf/overlays/wwclient.x86_64/rootfs/$(WWCLIENTDIR)/wwclient
 	install -m 0755 wwclient.aarch64 $(DESTDIR)$(DATADIR)/warewulf/overlays/wwclient.aarch64/rootfs/$(WWCLIENTDIR)/wwclient
+	install -m 0755 wwclient.riscv64 $(DESTDIR)$(DATADIR)/warewulf/overlays/wwclient.riscv64/rootfs/$(WWCLIENTDIR)/wwclient
 
 .PHONY: install-sos
 install-sos:
@@ -258,6 +263,7 @@ wwctl: vendor
 wwclient: vendor
 wwclient.x86_64: vendor
 wwclient.aarch64: vendor
+wwclient.riscv64: vendor
 update_configuration: vendor
 dist: vendor
 

@@ -45,6 +45,8 @@ tftp:
     "00:07": ipxe-snponly-x86_64.efi
     "00:09": ipxe-snponly-x86_64.efi
     "00:0B": arm64-efi/snponly.efi
+    "00:1B": bin-riscv64-efi-snponly.efi
+    "00:1C": bin-riscv64-efi-snponly.efi
   systemd name: tftp
 api:
   enabled: false
@@ -91,6 +93,8 @@ tftp:
     "00:07": ipxe-snponly-x86_64.efi
     "00:09": ipxe-snponly-x86_64.efi
     "00:0B": arm64-efi/snponly.efi
+    "00:1B": bin-riscv64-efi-snponly.efi
+    "00:1C": bin-riscv64-efi-snponly.efi
   systemd name: tftp
 api:
   enabled: false
@@ -139,6 +143,8 @@ tftp:
     "00:07": ipxe-snponly-x86_64.efi
     "00:09": ipxe-snponly-x86_64.efi
     "00:0B": arm64-efi/snponly.efi
+    "00:1B": bin-riscv64-efi-snponly.efi
+    "00:1C": bin-riscv64-efi-snponly.efi
   systemd name: tftp
 api:
   enabled: false
@@ -184,6 +190,8 @@ tftp:
     "00:07": ipxe-snponly-x86_64.efi
     "00:09": ipxe-snponly-x86_64.efi
     "00:0B": arm64-efi/snponly.efi
+    "00:1B": bin-riscv64-efi-snponly.efi
+    "00:1C": bin-riscv64-efi-snponly.efi
   systemd name: tftp
 api:
   enabled: false
@@ -266,6 +274,8 @@ tftp:
     "00:07": ipxe-snponly-x86_64.efi
     "00:09": ipxe-snponly-x86_64.efi
     "00:0B": arm64-efi/snponly.efi
+    "00:1B": bin-riscv64-efi-snponly.efi
+    "00:1C": bin-riscv64-efi-snponly.efi
   systemd name: tftp
 api:
   enabled: false

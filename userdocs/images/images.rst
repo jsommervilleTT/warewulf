@@ -447,7 +447,7 @@ image. For more information about QEMU, see their `GitHub
 
    When provisioning cluster nodes with a different architecture than the
    Warewulf server, also use the matching architecture-specific :ref:`wwclient`
-   overlay: e.g., wwclient.x86_64 or wwclient.aarch64.
+   overlay: e.g., wwclient.x86_64, wwclient.aarch64, or wwclient.riscv64.
 
 Read-only images
 ================

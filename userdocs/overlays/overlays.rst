@@ -248,9 +248,9 @@ can be overridden by specifying a ``WW_IPADDR`` environment variable, which can
 be set via an overlay in ``/etc/default/wwclient``.
 
 The default wwclient overlay contains a ``wwclient`` executable compiled for the
-same architecture as the Warewulf server. Architecture-specific wwclient.aarch64
-and wwclient.x86_64 overlays are available as well. This supports using wwclient
-on cluster nodes with a different architecture than the Warewulf server.
+same architecture as the Warewulf server. Architecture-specific wwclient.aarch64,
+wwclient.x86_64, and wwclient.riscv64 overlays are available as well. This supports
+using wwclient on cluster nodes with a different architecture than the Warewulf server.
 
 Network interfaces
 ------------------

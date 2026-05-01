@@ -171,6 +171,12 @@ if exists user-class and option user-class = "iPXE" {
     if option architecture-type = 00:0B {
         filename "/warewulf/snponly.efi";
     }
+    if option architecture-type = 00:1B {
+        filename "/warewulf/bin-riscv64-efi-snponly.efi";
+    }
+    if option architecture-type = 00:1C {
+        filename "/warewulf/bin-riscv64-efi-snponly.efi";
+    }
 }
 subnet 192.168.0.0 netmask 255.255.255.0 {
     max-lease-time 120;
@@ -218,6 +224,12 @@ if exists user-class and option user-class = "iPXE" {
     if option architecture-type = 00:0B {
         filename "/warewulf/snponly.efi";
     }
+    if option architecture-type = 00:1B {
+        filename "/warewulf/bin-riscv64-efi-snponly.efi";
+    }
+    if option architecture-type = 00:1C {
+        filename "/warewulf/bin-riscv64-efi-snponly.efi";
+    }
 }
 subnet 192.168.0.0 netmask 255.255.255.0 {
     max-lease-time 120;
@@ -260,6 +272,8 @@ dhcp-match=set:x86PC,option:client-arch, 7 #EFI x86-64
 dhcp-match=set:x86PC,option:client-arch, 6 #EFI x86-64
 dhcp-match=set:x86PC,option:client-arch, 9 #EFI x86-64
 dhcp-match=set:aarch64,option:client-arch, 11 #EFI aarch64
+dhcp-match=set:riscv64,option:client-arch, 27 #EFI RISC-V 64 (IANA 0x001b)
+dhcp-match=set:riscv64,option:client-arch, 28 #EFI RISC-V 64 HTTP boot (0x001c)
 dhcp-match=set:iPXE,77,"iPXE"
 dhcp-userclass=set:iPXE,iPXE
 dhcp-vendorclass=set:efi-http,HTTPClient:Arch:00016
@@ -268,6 +282,7 @@ dhcp-option-force=tag:efi-http,60,HTTPClient
 dhcp-boot=tag:efi-http,"http://192.168.0.1:9873/efiboot/shim.efi"
 dhcp-boot=tag:x86PC,"/warewulf/ipxe-snponly-x86_64.efi"
 dhcp-boot=tag:aarch64,"/warewulf/snponly.efi"
+dhcp-boot=tag:riscv64,"/warewulf/bin-riscv64-efi-snponly.efi"
 # iPXE binary will get the following configuration file
 dhcp-boot=tag:iPXE,"http://192.168.0.1:9873/ipxe/${mac:hexhyp}?assetkey=${asset}&uuid=${uuid}"
 dhcp-no-override
@@ -278,12 +293,17 @@ enable-ra
 # IPv6 matching (client-arch=61)
 dhcp-match=set:x86PC,option6:61,0007   # EFI x86-64
 dhcp-match=set:aarch64,option6:61,0011 # EFI aarch64
+dhcp-match=set:riscv64,option6:61,001b # EFI RISC-V 64
+dhcp-match=set:riscv64,option6:61,001c # EFI RISC-V 64 HTTP boot
 dhcp-vendorclass=set:x86PC,enterprise:343,PXEClient:Arch:00007   # EFI x86-64
 dhcp-vendorclass=set:aarch64,enterprise:343,PXEClient:Arch:00011 # EFI aarch64
+dhcp-vendorclass=set:riscv64,enterprise:343,PXEClient:Arch:0001b # EFI RISC-V 64
+dhcp-vendorclass=set:riscv64,enterprise:343,PXEClient:Arch:0001c # EFI RISC-V 64 HTTP boot
 
 # IPv6 bootfile-url (iPXE EFI binary)
 dhcp-option=tag:x86PC,option6:bootfile-url,"tftp://[2001:db8::1]/warewulf/ipxe-snponly-x86_64.efi"
 dhcp-option=tag:aarch64,option6:bootfile-url,"tftp://[2001:db8::1]/warewulf/snponly.efi"
+dhcp-option=tag:riscv64,option6:bootfile-url,"tftp://[2001:db8::1]/warewulf/bin-riscv64-efi-snponly.efi"
 # IPv6 iPXE binary will get the following configuration file
 dhcp-option=tag:iPXE,option6:bootfile-url,"http://[2001:db8::1]:9873/ipxe/${mac:hexhyp}?assetkey=${asset}&uuid=${uuid}"
 
@@ -303,6 +323,8 @@ dhcp-match=set:x86PC,option:client-arch, 7 #EFI x86-64
 dhcp-match=set:x86PC,option:client-arch, 6 #EFI x86-64
 dhcp-match=set:x86PC,option:client-arch, 9 #EFI x86-64
 dhcp-match=set:aarch64,option:client-arch, 11 #EFI aarch64
+dhcp-match=set:riscv64,option:client-arch, 27 #EFI RISC-V 64 (IANA 0x001b)
+dhcp-match=set:riscv64,option:client-arch, 28 #EFI RISC-V 64 HTTP boot (0x001c)
 dhcp-match=set:iPXE,77,"iPXE"
 dhcp-userclass=set:iPXE,iPXE
 dhcp-vendorclass=set:efi-http,HTTPClient:Arch:00016
@@ -311,6 +333,7 @@ dhcp-option-force=tag:efi-http,60,HTTPClient
 dhcp-boot=tag:efi-http,"http://192.168.0.1:9873/efiboot/shim.efi"
 dhcp-boot=tag:x86PC,"/warewulf/ipxe-snponly-x86_64.efi"
 dhcp-boot=tag:aarch64,"/warewulf/snponly.efi"
+dhcp-boot=tag:riscv64,"/warewulf/bin-riscv64-efi-snponly.efi"
 # iPXE binary will get the following configuration file
 dhcp-boot=tag:iPXE,"http://192.168.0.1:9873/ipxe/${mac:hexhyp}?assetkey=${asset}&uuid=${uuid}"
 dhcp-no-override
@@ -321,12 +344,17 @@ enable-ra
 # IPv6 matching (client-arch=61)
 dhcp-match=set:x86PC,option6:61,0007   # EFI x86-64
 dhcp-match=set:aarch64,option6:61,0011 # EFI aarch64
+dhcp-match=set:riscv64,option6:61,001b # EFI RISC-V 64
+dhcp-match=set:riscv64,option6:61,001c # EFI RISC-V 64 HTTP boot
 dhcp-vendorclass=set:x86PC,enterprise:343,PXEClient:Arch:00007   # EFI x86-64
 dhcp-vendorclass=set:aarch64,enterprise:343,PXEClient:Arch:00011 # EFI aarch64
+dhcp-vendorclass=set:riscv64,enterprise:343,PXEClient:Arch:0001b # EFI RISC-V 64
+dhcp-vendorclass=set:riscv64,enterprise:343,PXEClient:Arch:0001c # EFI RISC-V 64 HTTP boot
 
 # IPv6 bootfile-url (iPXE EFI binary)
 dhcp-option=tag:x86PC,option6:bootfile-url,"tftp://[2001:db8::1]/warewulf/ipxe-snponly-x86_64.efi"
 dhcp-option=tag:aarch64,option6:bootfile-url,"tftp://[2001:db8::1]/warewulf/snponly.efi"
+dhcp-option=tag:riscv64,option6:bootfile-url,"tftp://[2001:db8::1]/warewulf/bin-riscv64-efi-snponly.efi"
 # IPv6 iPXE binary will get the following configuration file
 dhcp-option=tag:iPXE,option6:bootfile-url,"http://[2001:db8::1]:9873/ipxe/${mac:hexhyp}?assetkey=${asset}&uuid=${uuid}"
 

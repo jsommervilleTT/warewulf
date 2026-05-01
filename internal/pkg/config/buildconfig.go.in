@@ -31,7 +31,7 @@ type TFTPConf struct {
 	TftpRoot    string `yaml:"tftproot,omitempty" default:"@TFTPDIR@"`
 	SystemdName string `yaml:"systemd name,omitempty" default:"tftp"`
 
-	IpxeBinaries map[string]string `yaml:"ipxe,omitempty" default:"{\"00:09\": \"ipxe-snponly-x86_64.efi\",\"00:00\": \"undionly.kpxe\",\"00:0B\": \"arm64-efi/snponly.efi\",\"00:07\":  \"ipxe-snponly-x86_64.efi\"}"`
+	IpxeBinaries map[string]string `yaml:"ipxe,omitempty" default:"{\"00:09\": \"ipxe-snponly-x86_64.efi\",\"00:00\": \"undionly.kpxe\",\"00:0B\": \"arm64-efi/snponly.efi\",\"00:07\":  \"ipxe-snponly-x86_64.efi\",\"00:1B\": \"bin-riscv64-efi-snponly.efi\",\"00:1C\": \"bin-riscv64-efi-snponly.efi\"}"`
 }
 
 func (conf TFTPConf) Enabled() bool {

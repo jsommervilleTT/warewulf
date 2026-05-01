@@ -69,16 +69,16 @@ of building iPXE locally.
    # bash build-ipxe.sh -h
    Usage: build-ipxe.sh
             [-h] (help)
-   TARGETS: bin-x86_64-pcbios/undionly.kpxe bin-x86_64-efi/snponly.efi bin-arm64-efi/snponly.efi
+   TARGETS: bin-x86_64-pcbios/undionly.kpxe bin-x86_64-efi/snponly.efi bin-arm64-efi/snponly.efi bin-riscv64-efi/snponly.efi
    IPXE_BRANCH: master
    DESTDIR: /usr/local/share/ipxe
 
 Running build-ipxe.sh
 ^^^^^^^^^^^^^^^^^^^^^
 
-The script, by default, builds iPXE for x86_64 BIOS, x86_64 EFI, and arm64 EFI
-from the master branch on the iPXE project GitHub and stores the resultant
-builds in ``/usr/local/share/ipxe/``. (These parameters can be adjusted by
+The script, by default, builds iPXE for x86_64 BIOS, x86_64 EFI, arm64 EFI, and
+riscv64 EFI from the master branch on the iPXE project GitHub and stores the
+resultant builds in ``/usr/local/share/ipxe/``. (These parameters can be adjusted by
 setting ``TARGETS``, ``IPXE_BRANCH``, and ``DESTDIR`` environment variables,
 with the current values shown in the ``-h`` output for reference.)
 
@@ -89,12 +89,17 @@ with the current values shown in the ``-h`` output for reference.)
    [...]
    # ls -1 /usr/local/share/ipxe/
    bin-arm64-efi-snponly.efi
+   bin-riscv64-efi-snponly.efi
    bin-x86_64-efi-snponly.efi
    bin-x86_64-pcbios-undionly.kpxe
 
 .. note::
 
    Building for aarch64 requires the package ``gcc-aarch64-linux-gnu``.
+
+   Building for riscv64 requires ``gcc-riscv64-linux-gnu`` (Debian/Ubuntu) or
+   ``gcc-riscv64-linux-gnu-gcc`` (Fedora/RHEL); the cross compiler must appear
+   as ``riscv64-linux-gnu-gcc`` on ``PATH``.
 
 Build options
 ^^^^^^^^^^^^^
@@ -174,8 +179,17 @@ In Warewulf v4.5.0, Warewulf can be configured to use these files using the
        "00:07": bin-x86_64-efi-snponly.efi
        "00:09": bin-x86_64-efi-snponly.efi
        "00:0B": bin-arm64-efi-snponly.efi
+       "00:1B": bin-riscv64-efi-snponly.efi
+       "00:1C": bin-riscv64-efi-snponly.efi
    paths:
      ipxesource: /usr/local/share/ipxe
+
+   The ``00:1B`` and ``00:1C`` keys are the DHCP option 93 client architecture
+   types for `RISC-V 64-bit UEFI`_ and RISC-V 64-bit UEFI HTTP boot (IANA). If
+   your firmware uses a different value, capture a DHCP Discover with
+   ``tcpdump`` and adjust the map accordingly.
+
+.. _RISC-V 64-bit UEFI: https://www.iana.org/assignments/dhcpv6-parameters/dhcpv6-parameters.xhtml#processor-architecture
 
 Restart ``warewulfd`` following the change to ``warewulf.conf``. Then remove any
 previously-provisioned files from ``/var/lib/tftpboot/warewulf/`` and use
@@ -205,6 +219,7 @@ use ``wwctl configure tftp`` to re-provision the TFTP files.
 .. code-block:: console
 
    # cp /usr/local/share/ipxe/bin-arm64-efi-snponly.efi /usr/share/warewulf/ipxe/arm64.efi
+   # cp /usr/local/share/ipxe/bin-riscv64-efi-snponly.efi /usr/share/warewulf/ipxe/riscv64.efi
    # cp /usr/local/share/ipxe/bin-x86_64-efi-snponly.efi /usr/share/warewulf/ipxe/x86_64.efi
    # cp /usr/local/share/ipxe/bin-x86_64-pcbios-undionly.kpxe /usr/share/warewulf/ipxe/x86_64.kpxe
    # rm /var/lib/tftpboot/warewulf/*

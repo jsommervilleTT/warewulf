@@ -2,7 +2,7 @@
 
 set -e
 
-TARGETS=${TARGETS:-"bin-x86_64-pcbios/undionly.kpxe bin-x86_64-efi/snponly.efi bin-arm64-efi/snponly.efi"}
+TARGETS=${TARGETS:-"bin-x86_64-pcbios/undionly.kpxe bin-x86_64-efi/snponly.efi bin-arm64-efi/snponly.efi bin-riscv64-efi/snponly.efi"}
 IPXE_BRANCH=${IPXE_BRANCH:-master}
 DESTDIR=${DESTDIR:-/usr/local/share/ipxe}
 
@@ -50,6 +50,15 @@ main() {
       fi
       CROSS=aarch64-linux-gnu-
       configure_arm64
+    elif $(echo "$target" | grep -q "\-riscv64-")
+    then
+      if ! which riscv64-linux-gnu-gcc >/dev/null 2>&1
+      then
+        echo 1>&2 "riscv64-linux-gnu-gcc not found: not building for riscv64"
+        continue
+      fi
+      CROSS=riscv64-linux-gnu-
+      configure_riscv64
     else
       CROSS=""
       configure_x86_64
@@ -64,6 +73,19 @@ main() {
 configure_arm64() {
   # CONSOLE_SERIAL causes build failure for aarch64, so omitting here
   # https://github.com/ipxe/ipxe/issues/658
+  sed -i.bak \
+      -e 's,//\(#define.*CONSOLE_FRAMEBUFFER.*\),\1,' \
+      config/console.h
+
+  sed -i.bak \
+      -e 's,//\(#define.*IMAGE_ZLIB.*\),\1,' \
+      -e 's,//\(#define.*IMAGE_GZIP.*\),\1,' \
+      -e 's,//\(#define.*VLAN_CMD.*\),\1,' \
+      config/general.h
+}
+
+configure_riscv64() {
+  # Match arm64: framebuffer + compressed images + VLAN (no serial toggles).
   sed -i.bak \
       -e 's,//\(#define.*CONSOLE_FRAMEBUFFER.*\),\1,' \
       config/console.h
